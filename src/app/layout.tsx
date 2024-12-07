@@ -19,7 +19,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <body className={`${inter.className} antialiased`}>
+        <header className="relative">
+          <h1 className="sr-only">form builder</h1>
+        </header>
+        <main className="max-w-[min(100%,90rem)] mx-auto h-full overflow-auto">
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
