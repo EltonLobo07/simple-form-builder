@@ -1,3 +1,5 @@
+import { FormBuilder } from "./ui/FormBuilder";
+
 export default function Home() {
-  return <div>start of the project</div>;
+  return <FormBuilder headingLvl={2} />;
 }
