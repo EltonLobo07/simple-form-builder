@@ -6,7 +6,7 @@ export const QuestionTypesSchema = v.picklist(QUESTION_TYPES);
 export const QuestionCommonSchema = v.object({
   id: v.string(),
   title: v.string(),
-  helpText: v.union([v.null(), v.string()]),
+  helpText: v.string(),
 });
 
 export const OptionSchmea = v.object({ id: v.string(), value: v.string() });
