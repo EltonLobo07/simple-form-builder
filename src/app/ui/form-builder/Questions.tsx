@@ -2,13 +2,22 @@
 
 import { useFormState } from "./form-state";
 import { QuestionComp } from "./QuestionComp";
+import { QuestionCompSkeleton } from "./QuestionCompSkeleton";
 
 export function Questions() {
   const questions = useFormState((state) => state.questions);
   const updateQuestion = useFormState((state) => state.updateQuestion);
   const deleteQuestion = useFormState((state) => state.deleteQuestion);
 
-  if (questions === null || questions.length === 0) {
+  if (questions === null) {
+    return (
+      <div className="px-24px">
+        <QuestionCompSkeleton />
+      </div>
+    );
+  }
+
+  if (questions.length === 0) {
     return null;
   }
 
