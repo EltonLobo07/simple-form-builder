@@ -1,4 +1,12 @@
-export function Bell() {
+"use client";
+
+import { classJoin } from "@/utils/tailwind";
+
+type Props = Readonly<{
+  noFlexShrink?: boolean;
+}>;
+
+export function Bell(props: Props) {
   return (
     <svg
       aria-hidden={true}
@@ -6,7 +14,10 @@ export function Bell() {
       fill="none"
       stroke="currentColor"
       strokeWidth="1.5"
-      className="w-16px h-16px"
+      className={classJoin(
+        "w-16px h-16px",
+        props.noFlexShrink && "flex-shrink-0"
+      )}
       viewBox="0 0 24 24"
     >
       <path
