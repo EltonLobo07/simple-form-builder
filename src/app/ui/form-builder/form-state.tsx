@@ -6,7 +6,7 @@ import type { FormState, Notification, Question } from "./types";
 import { fromLocalStorage } from "@/utils/localStorage";
 import { FORM_BUILDER_STATE_LS_KEY } from "./constants";
 import * as v from "valibot";
-import { QuestionsSchema } from "./schemas";
+import { HeadingSchema, QuestionsSchema } from "./schemas";
 
 export const FormBuilderStateContext =
   React.createContext<StoreApi<FormState> | null>(null);
@@ -22,7 +22,7 @@ export function FormStateProvider(
   const store = React.useMemo(
     () =>
       createStore<FormState>()((set, get) => ({
-        heading: "",
+        heading: null,
         questions: null,
         notification: {
           type: "info",
@@ -74,6 +74,8 @@ export function FormStateProvider(
         changesSaved: () => {
           set(() => ({ areChangesSaved: true }));
         },
+        setHeading: (heading: string) =>
+          set({ heading, areChangesSaved: false }),
       })),
     // Since the props are named with a prefix of `initial`, there is no need to react to changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,14 +83,22 @@ export function FormStateProvider(
   );
 
   React.useEffect(() => {
-    const questions = fromLocalStorage({
-      defaultValue: [],
-      isValue: (possibleValue) => v.is(QuestionsSchema, possibleValue),
+    const { questions, heading } = fromLocalStorage({
+      defaultValue: { questions: [], heading: "Initial value" },
+      isValue: (possibleValue) =>
+        v.is(
+          v.object({
+            questions: QuestionsSchema,
+            heading: HeadingSchema,
+          }),
+          possibleValue
+        ),
       key: FORM_BUILDER_STATE_LS_KEY,
     });
     const curNotification = store.getState().notification;
     store.setState({
       questions,
+      heading,
       notification: curNotification?.id === null ? null : curNotification,
     });
   }, [store]);

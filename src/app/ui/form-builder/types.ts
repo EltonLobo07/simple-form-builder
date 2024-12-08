@@ -1,7 +1,9 @@
 import * as v from "valibot";
 import {
+  HeadingSchema,
   OptionsSchema,
   QuestionSchema,
+  QuestionsSchema,
   QuestionTypesSchema,
   QuestionWithOptionsSchema,
   QuestionWithoutOptionsSchema,
@@ -29,8 +31,8 @@ export type Notification = {
 };
 
 export type FormState = {
-  heading: string;
-  questions: Question[] | null;
+  heading: v.InferOutput<typeof HeadingSchema> | null;
+  questions: v.InferOutput<typeof QuestionsSchema> | null;
   notification: Notification | null;
   areChangesSaved: boolean;
   addQuestion: (question: Question) => void;
@@ -38,4 +40,5 @@ export type FormState = {
   deleteQuestion: (id: string) => void;
   setNotification: (notification: Notification) => void;
   changesSaved: () => void;
+  setHeading: (heading: string) => void;
 };

@@ -34,3 +34,5 @@ export const QuestionSchema = v.union([
 ]);
 
 export const QuestionsSchema = v.array(QuestionSchema);
+
+export const HeadingSchema = v.string();

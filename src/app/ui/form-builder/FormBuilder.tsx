@@ -25,15 +25,15 @@ export function FormBuilder(props: Props) {
   return (
     <form
       aria-labelledby={formHeadingId}
-      className="border border-gray-200 min-h-full max-w-[min(100%,40rem)] mx-auto flex flex-col"
+      className="border-x border-gray-200 min-h-full max-w-[min(100%,40rem)] mx-auto flex flex-col"
     >
       <FormStateProvider>
         <div className="sticky top-0 z-10 bg-white">
-          <header className="flex flex-wrap items-center justify-between gap-x-2 border-b border-gray-200 py-3 pl-[20px] pr-24px">
+          <header className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 py-3 pl-[20px] pr-24px">
             <Heading id={formHeadingId} className="grow">
               <HeadingInput />
             </Heading>
-            <div className="flex items-center gap-x-16px">
+            <div className="ml-auto flex items-center gap-x-16px">
               <PreviewLink />
               <ChangesSavedIndicator />
             </div>

@@ -10,13 +10,14 @@ export function SaveAsDraftBtn() {
   const areChangesSaved = useFormState((state) => state.areChangesSaved);
   const changesSaved = useFormState((state) => state.changesSaved);
   const questions = useFormState((state) => state.questions);
+  const heading = useFormState((state) => state.heading);
 
   const onClick = () => {
-    if (questions === null) {
+    if (questions === null || heading === null) {
       // precaution
       return;
     }
-    updateLocalStorage(questions, FORM_BUILDER_STATE_LS_KEY);
+    updateLocalStorage({ questions, heading }, FORM_BUILDER_STATE_LS_KEY);
     changesSaved();
   };
 
