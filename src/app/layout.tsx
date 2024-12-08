@@ -23,7 +23,7 @@ export default function RootLayout({
         <header className="relative">
           <h1 className="sr-only">form builder</h1>
         </header>
-        <main className="max-w-[min(100%,90rem)] mx-auto h-full overflow-auto">
+        <main className="max-w-[min(100%,90rem)] mx-auto h-full overflow-y-scroll">
           {children}
         </main>
       </body>
