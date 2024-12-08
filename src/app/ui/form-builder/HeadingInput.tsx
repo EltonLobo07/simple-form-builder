@@ -17,7 +17,7 @@ export function HeadingInput() {
         form heading
       </label>
       <input
-        inert={isHeadingNull}
+        {...(isHeadingNull ? { inert: "" } : {})}
         type="text"
         id={inputId}
         value={heading ?? ""}
