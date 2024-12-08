@@ -1,5 +1,3 @@
-import type { AtLeastTwo } from "@/utils/types";
-import { QUESTION_TYPES } from "./constants";
 import * as v from "valibot";
 import {
   OptionsSchema,
@@ -24,8 +22,10 @@ export type QuestionWithoutOptions = v.InferOutput<
 export type Question = v.InferOutput<typeof QuestionSchema>;
 
 export type Notification = {
-  type: "critical" | "warning";
+  type: "critical" | "info";
   message: string;
+  srOnly?: boolean;
+  id: string | null;
 };
 
 export type FormState = {

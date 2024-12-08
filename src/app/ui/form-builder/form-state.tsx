@@ -25,8 +25,10 @@ export function FormStateProvider(
         heading: "",
         questions: null,
         notification: {
-          type: "warning",
+          type: "info",
           message: "Loading form data",
+          srOnly: true,
+          id: null,
         },
         areChangesSaved: true,
         // todo: create a middleware to get rid of the repitition -
@@ -47,7 +49,7 @@ export function FormStateProvider(
           if (questions === null) {
             return;
           }
-          set((state) => ({
+          set(() => ({
             questions: questions.map((question) =>
               question.id === id ? updated : question
             ),
@@ -84,7 +86,11 @@ export function FormStateProvider(
       isValue: (possibleValue) => v.is(QuestionsSchema, possibleValue),
       key: FORM_BUILDER_STATE_LS_KEY,
     });
-    store.setState({ questions, notification: null });
+    const curNotification = store.getState().notification;
+    store.setState({
+      questions,
+      notification: curNotification?.id === null ? null : curNotification,
+    });
   }, [store]);
 
   return (

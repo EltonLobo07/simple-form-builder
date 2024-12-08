@@ -7,27 +7,32 @@ import { Notification } from "./types";
 
 const TYPE_TO_ICON: Record<Notification["type"], () => React.ReactNode> = {
   critical: Error,
-  warning: Bell,
+  info: Bell,
 };
 
 export function Notifier() {
   const notification = useFormState((state) => state.notification);
-  const Icon = TYPE_TO_ICON[notification?.type ?? "warning"];
+  const Icon = TYPE_TO_ICON[notification?.type ?? "info"];
 
   return (
     <div
       aria-live="polite"
       aria-atomic={true}
       className={classJoin(
-        "min-h-6 text-xs font-medium flex justify-center items-center gap-x-1",
+        "relative min-h-6 text-xs font-medium flex justify-center items-center gap-x-1",
         notification?.type === "critical" ? "text-red-500" : "text-yellow-500"
       )}
     >
       {notification?.message && (
-        <>
+        <span
+          className={classJoin(
+            "flex items-center gap-x-1",
+            notification?.srOnly && "sr-only"
+          )}
+        >
           <Icon />
           <span>{notification.message}</span>
-        </>
+        </span>
       )}
     </div>
   );
