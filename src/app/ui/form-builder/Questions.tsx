@@ -8,7 +8,7 @@ export function Questions() {
   const updateQuestion = useFormState((state) => state.updateQuestion);
   const deleteQuestion = useFormState((state) => state.deleteQuestion);
 
-  if (questions.length === 0) {
+  if (questions === null || questions.length === 0) {
     return null;
   }
 

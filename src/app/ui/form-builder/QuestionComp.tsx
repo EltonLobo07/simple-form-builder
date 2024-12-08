@@ -57,7 +57,7 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
         newQuestion.options = [newOption(), newOption()];
       } else {
         newQuestion.type = newType;
-        delete newQuestion.options;
+        newQuestion.options = null;
       }
       onChange(question.id, newQuestion);
     },

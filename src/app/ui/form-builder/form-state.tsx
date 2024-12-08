@@ -3,6 +3,10 @@
 import React from "react";
 import { createStore, useStore, type StoreApi } from "zustand";
 import type { FormState, Notification, Question } from "./types";
+import { fromLocalStorage } from "@/utils/localStorage";
+import { FORM_BUILDER_STATE_LS_KEY } from "./constants";
+import * as v from "valibot";
+import { QuestionsSchema } from "./schemas";
 
 export const FormBuilderStateContext =
   React.createContext<StoreApi<FormState> | null>(null);
@@ -17,28 +21,46 @@ export function FormStateProvider(
 ) {
   const store = React.useMemo(
     () =>
-      createStore<FormState>()((set) => ({
-        heading: props.initialHeading ?? "",
-        questions: props.initialQuestions ?? [],
-        notification: props.initialNotification ?? null,
+      createStore<FormState>()((set, get) => ({
+        heading: "",
+        questions: null,
+        notification: {
+          type: "warning",
+          message: "Loading form data",
+        },
         areChangesSaved: true,
-        // todo: create a middleware to get rid of the repitition - setting `areChangesSaved`
-        addQuestion: (question: Question) =>
-          set(({ questions }) => ({
+        // todo: create a middleware to get rid of the repitition -
+        // 1. setting `areChangesSaved`
+        // 2. setting `questions`
+        addQuestion: (question: Question) => {
+          const questions = get().questions;
+          if (questions === null) {
+            return;
+          }
+          set(() => ({
             questions: [...questions, question],
             areChangesSaved: false,
-          })),
+          }));
+        },
         updateQuestion: (id: string, updated: Question) => {
+          const questions = get().questions;
+          if (questions === null) {
+            return;
+          }
           set((state) => ({
-            questions: state.questions.map((question) =>
+            questions: questions.map((question) =>
               question.id === id ? updated : question
             ),
             areChangesSaved: false,
           }));
         },
         deleteQuestion: (id: string) => {
-          set((state) => ({
-            questions: state.questions.filter((question) => question.id !== id),
+          const questions = get().questions;
+          if (questions === null) {
+            return;
+          }
+          set(() => ({
+            questions: questions.filter((question) => question.id !== id),
             areChangesSaved: false,
           }));
         },
@@ -55,6 +77,15 @@ export function FormStateProvider(
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
+
+  React.useEffect(() => {
+    const questions = fromLocalStorage({
+      defaultValue: [],
+      isValue: (possibleValue) => v.is(QuestionsSchema, possibleValue),
+      key: FORM_BUILDER_STATE_LS_KEY,
+    });
+    store.setState({ questions, notification: null });
+  }, [store]);
 
   return (
     <FormBuilderStateContext.Provider value={store}>

@@ -1,27 +1,27 @@
 import type { AtLeastTwo } from "@/utils/types";
 import { QUESTION_TYPES } from "./constants";
+import * as v from "valibot";
+import {
+  OptionsSchema,
+  QuestionSchema,
+  QuestionTypesSchema,
+  QuestionWithOptionsSchema,
+  QuestionWithoutOptionsSchema,
+} from "./schemas";
 
-export type QuestionType = (typeof QUESTION_TYPES)[number];
+export type QuestionType = v.InferOutput<typeof QuestionTypesSchema>;
 
-export type Options = AtLeastTwo<{ id: string; value: string }>;
+export type Options = v.InferOutput<typeof OptionsSchema>;
 
-type QuestionCommonProps = {
-  id: string;
-  title: string;
-  helpText?: string | null;
-};
+export type QuestionWithOptions = v.InferOutput<
+  typeof QuestionWithOptionsSchema
+>;
 
-export type QuestionWithOptions = QuestionCommonProps & {
-  type: "single-select";
-  options: Options;
-};
+export type QuestionWithoutOptions = v.InferOutput<
+  typeof QuestionWithoutOptionsSchema
+>;
 
-export type QuestionWithoutOptions = QuestionCommonProps & {
-  type: Exclude<QuestionType, "single-select">;
-  options?: undefined;
-};
-
-export type Question = QuestionWithOptions | QuestionWithoutOptions;
+export type Question = v.InferOutput<typeof QuestionSchema>;
 
 export type Notification = {
   type: "critical" | "warning";
@@ -30,7 +30,7 @@ export type Notification = {
 
 export type FormState = {
   heading: string;
-  questions: Question[];
+  questions: Question[] | null;
   notification: Notification | null;
   areChangesSaved: boolean;
   addQuestion: (question: Question) => void;
