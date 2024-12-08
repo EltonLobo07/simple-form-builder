@@ -8,6 +8,7 @@ import { Tick } from "../icons";
 import { Notifier } from "./Notifier";
 import { BtnWithIcon } from "../components/BtnWithIcon";
 import { SaveAsDraftBtn } from "./SaveAsDraftBtn";
+import { ChangesSavedIndicator } from "./ChangesSavedIndicator";
 
 type Props = Readonly<{
   headingLvl: 1 | 2 | 3 | 4 | 5 | 6;
@@ -32,7 +33,10 @@ export function FormBuilder(props: Props) {
             <Heading id={formHeadingId} className="grow">
               <HeadingInput />
             </Heading>
-            <PreviewLink />
+            <div className="flex items-center gap-x-16px">
+              <PreviewLink />
+              <ChangesSavedIndicator />
+            </div>
           </header>
           <Notifier />
         </div>

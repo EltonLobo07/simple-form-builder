@@ -21,33 +21,34 @@ export function FormStateProvider(
         heading: props.initialHeading ?? "",
         questions: props.initialQuestions ?? [],
         notification: props.initialNotification ?? null,
-        // todo: create a middleware to get rid of the repitition - setting `notification`
+        areChangesSaved: true,
+        // todo: create a middleware to get rid of the repitition - setting `areChangesSaved`
         addQuestion: (question: Question) =>
           set(({ questions }) => ({
             questions: [...questions, question],
-            notification: {
-              type: "warning",
-              message: "changes are not saved",
-            },
+            areChangesSaved: false,
           })),
         updateQuestion: (id: string, updated: Question) => {
           set((state) => ({
             questions: state.questions.map((question) =>
               question.id === id ? updated : question
             ),
-            notification: { type: "warning", message: "changes are not saved" },
+            areChangesSaved: false,
           }));
         },
         deleteQuestion: (id: string) => {
           set((state) => ({
             questions: state.questions.filter((question) => question.id !== id),
-            notification: { type: "warning", message: "changes are not saved" },
+            areChangesSaved: false,
           }));
         },
         setNotification: (notification: Notification) => {
           set(() => ({
             notification,
           }));
+        },
+        changesSaved: () => {
+          set(() => ({ areChangesSaved: true }));
         },
       })),
     // Since the props are named with a prefix of `initial`, there is no need to react to changes

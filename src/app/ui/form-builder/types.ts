@@ -32,8 +32,10 @@ export type FormState = {
   heading: string;
   questions: Question[];
   notification: Notification | null;
+  areChangesSaved: boolean;
   addQuestion: (question: Question) => void;
   updateQuestion: (id: string, updated: Question) => void;
   deleteQuestion: (id: string) => void;
   setNotification: (notification: Notification) => void;
+  changesSaved: () => void;
 };
