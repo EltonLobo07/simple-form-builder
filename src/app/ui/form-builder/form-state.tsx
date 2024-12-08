@@ -2,7 +2,7 @@
 
 import React from "react";
 import { createStore, useStore, type StoreApi } from "zustand";
-import type { FormState, Question } from "./types";
+import type { FormState, Notification, Question } from "./types";
 
 export const FormBuilderStateContext =
   React.createContext<StoreApi<FormState> | null>(null);
@@ -11,6 +11,7 @@ export function FormStateProvider(
   props: Readonly<{
     initialHeading?: string;
     initialQuestions?: Question[];
+    initialNotification?: Notification | null;
     children: React.ReactNode;
   }>
 ) {
@@ -19,18 +20,33 @@ export function FormStateProvider(
       createStore<FormState>()((set) => ({
         heading: props.initialHeading ?? "",
         questions: props.initialQuestions ?? [],
+        notification: props.initialNotification ?? null,
+        // todo: create a middleware to get rid of the repitition - setting `notification`
         addQuestion: (question: Question) =>
-          set(({ questions }) => ({ questions: [...questions, question] })),
+          set(({ questions }) => ({
+            questions: [...questions, question],
+            notification: {
+              type: "warning",
+              message: "changes are not saved",
+            },
+          })),
         updateQuestion: (id: string, updated: Question) => {
           set((state) => ({
             questions: state.questions.map((question) =>
               question.id === id ? updated : question
             ),
+            notification: { type: "warning", message: "changes are not saved" },
           }));
         },
         deleteQuestion: (id: string) => {
           set((state) => ({
             questions: state.questions.filter((question) => question.id !== id),
+            notification: { type: "warning", message: "changes are not saved" },
+          }));
+        },
+        setNotification: (notification: Notification) => {
+          set(() => ({
+            notification,
           }));
         },
       })),

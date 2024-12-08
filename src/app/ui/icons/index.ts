@@ -11,3 +11,5 @@ export * from "./Number";
 export * from "./Url";
 export * from "./Circle";
 export * from "./Delete";
+export * from "./Bell";
+export * from "./Error";

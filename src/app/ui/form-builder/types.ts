@@ -23,10 +23,17 @@ export type QuestionWithoutOptions = QuestionCommonProps & {
 
 export type Question = QuestionWithOptions | QuestionWithoutOptions;
 
+export type Notification = {
+  type: "critical" | "warning";
+  message: string;
+};
+
 export type FormState = {
   heading: string;
   questions: Question[];
+  notification: Notification | null;
   addQuestion: (question: Question) => void;
   updateQuestion: (id: string, updated: Question) => void;
   deleteQuestion: (id: string) => void;
+  setNotification: (notification: Notification) => void;
 };

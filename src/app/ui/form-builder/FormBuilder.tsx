@@ -5,6 +5,7 @@ import { PreviewLink } from "./PreviewLink";
 import { AddQuestionBtn } from "./AddQuestionBtn";
 import { Questions } from "./Questions";
 import { Draft, Tick } from "../icons";
+import { Notifier } from "./Notifier";
 
 type Props = Readonly<{
   headingLvl: 1 | 2 | 3 | 4 | 5 | 6;
@@ -24,12 +25,15 @@ export function FormBuilder(props: Props) {
       className="border border-gray-200 min-h-full max-w-[min(100%,40rem)] mx-auto flex flex-col"
     >
       <FormStateProvider>
-        <header className="sticky top-0 z-10 bg-white pl-[20px] mb-24px pr-24px flex flex-wrap items-center justify-between gap-x-2 py-3 border-b border-gray-200">
-          <Heading id={formHeadingId} className="grow">
-            <HeadingInput />
-          </Heading>
-          <PreviewLink />
-        </header>
+        <div className="sticky top-0 z-10 bg-white">
+          <header className="flex flex-wrap items-center justify-between gap-x-2 border-b border-gray-200 py-3 pl-[20px] pr-24px">
+            <Heading id={formHeadingId} className="grow">
+              <HeadingInput />
+            </Heading>
+            <PreviewLink />
+          </header>
+          <Notifier />
+        </div>
         <div className="grow">
           <Questions />
           <AddQuestionBtn />
