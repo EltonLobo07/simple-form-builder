@@ -64,6 +64,13 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
     [onChange, question]
   );
 
+  const onTextChange = React.useCallback(
+    (textObj: Partial<Pick<Question, "title" | "helpText">>) => {
+      onChange(question.id, { ...question, ...textObj });
+    },
+    [onChange, question]
+  );
+
   const addNewOption = React.useCallback(
     (question: QuestionWithOptions) => {
       onChange(question.id, {
@@ -92,6 +99,23 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
     [onChange]
   );
 
+  const updateOption = React.useCallback(
+    (question: QuestionWithOptions, optionId: string, value: string) => {
+      const newOptions = question.options.map((option) => {
+        if (option.id === optionId) {
+          return { ...option, value };
+        }
+        return option;
+      });
+      // todo: remove the type assertion (create a type narrowing or type assertion helper function)
+      onChange(question.id, {
+        ...question,
+        options: newOptions as unknown as QuestionWithOptions["options"],
+      });
+    },
+    [onChange]
+  );
+
   return (
     <div className="border border-gray-200 relative bg-white rounded-2xl p-4">
       <div className="flex items-center gap-x-2 mb-2">
@@ -104,6 +128,7 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
             id={titleInputId}
             name="title"
             defaultValue={question.title}
+            onChange={(e) => onTextChange({ title: e.target.value })}
             placeholder="Write a question"
             className="font-semibold text-sm placeholder:text-gray-400 text-black"
           />
@@ -114,7 +139,8 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
             type="text"
             id={helpTextInputId}
             name="helpText"
-            defaultValue={question.helpText ?? ""}
+            defaultValue={question.helpText}
+            onChange={(e) => onTextChange({ helpText: e.target.value })}
             placeholder="Write a help text or caption (leave empty if not needed)."
             className="text-xs placholder:text-gray-400 text-black"
           />
@@ -151,6 +177,7 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
             question={question}
             addNewOption={addNewOption}
             deleteOption={deleteOption}
+            updateOption={updateOption}
           />
         )}
       </div>
@@ -225,12 +252,18 @@ type WithOptionsAnswerAreaProps = Readonly<{
   question: QuestionWithOptions;
   addNewOption: (question: QuestionWithOptions) => void;
   deleteOption: (question: QuestionWithOptions, optionId: string) => void;
+  updateOption: (
+    question: QuestionWithOptions,
+    optionId: string,
+    value: string
+  ) => void;
 }>;
 
 function WithOptionsAnswerArea({
   question,
   addNewOption,
   deleteOption,
+  updateOption,
 }: WithOptionsAnswerAreaProps) {
   const lastIndex = question.options.length - 1;
 
@@ -252,6 +285,9 @@ function WithOptionsAnswerArea({
               id={option.id}
               name="option"
               defaultValue={option.value}
+              onChange={(e) =>
+                updateOption(question, option.id, e.target.value)
+              }
               placeholder={`Option ${index + 1}`}
               className="grow border border-gray-200 rounded-lg px-8px py-[0.3125rem]"
             />
