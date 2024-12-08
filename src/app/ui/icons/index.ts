@@ -13,3 +13,4 @@ export * from "./Circle";
 export * from "./Delete";
 export * from "./Bell";
 export * from "./Error";
+export * from "./Loader";
