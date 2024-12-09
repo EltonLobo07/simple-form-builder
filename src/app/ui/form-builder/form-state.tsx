@@ -31,6 +31,10 @@ export function FormStateProvider(
           id: null,
         },
         areChangesSaved: true,
+        enableAutoFocusOnAdd: false,
+        setEnableAutoFocusOnAdd(enableAutoFocusOnAdd) {
+          set(() => ({ enableAutoFocusOnAdd }));
+        },
         // todo: create a middleware to get rid of the repitition -
         // 1. setting `areChangesSaved`
         // 2. setting `questions`

@@ -35,10 +35,12 @@ export type FormState = {
   questions: v.InferOutput<typeof QuestionsSchema> | null;
   notification: Notification | null;
   areChangesSaved: boolean;
+  enableAutoFocusOnAdd: boolean;
   addQuestion: (question: Question) => void;
   updateQuestion: (id: string, updated: Question) => void;
   deleteQuestion: (id: string) => void;
   setNotification: (notification: Notification) => void;
   changesSaved: () => void;
   setHeading: (heading: string) => void;
+  setEnableAutoFocusOnAdd: (enableAutoFocusOnAdd: boolean) => void;
 };

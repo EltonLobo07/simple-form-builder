@@ -23,6 +23,7 @@ import { QUESTION_TYPES } from "./constants";
 import { exhaustiveCheck } from "@/utils/code-flow";
 import { newOption } from "./helpers";
 import { motion } from "motion/react";
+import { useFormState } from "./form-state";
 
 type Props = Readonly<{
   question: Question;
@@ -49,6 +50,12 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
   const id = React.useId();
   const titleInputId = getInputId("title", id);
   const helpTextInputId = getInputId("helpText", id);
+  const setEnableAutoFocusOnAdd = useFormState(
+    (state) => state.setEnableAutoFocusOnAdd
+  );
+  const enableAutoFocusOnAdd = useFormState(
+    (state) => state.enableAutoFocusOnAdd
+  );
 
   const onTypeChange = React.useCallback(
     (newType: QuestionType) => {
@@ -74,12 +81,13 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
 
   const addNewOption = React.useCallback(
     (question: QuestionWithOptions) => {
+      setEnableAutoFocusOnAdd(true);
       onChange(question.id, {
         ...question,
         options: [...question.options, newOption()],
       });
     },
-    [onChange]
+    [onChange, setEnableAutoFocusOnAdd]
   );
 
   const deleteOption = React.useCallback(
@@ -129,6 +137,7 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
           </label>
           <input
             type="text"
+            autoFocus={enableAutoFocusOnAdd}
             id={titleInputId}
             name="title"
             defaultValue={question.title}
@@ -182,6 +191,7 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
             addNewOption={addNewOption}
             deleteOption={deleteOption}
             updateOption={updateOption}
+            enableAutoFocusOnAdd={enableAutoFocusOnAdd}
           />
         )}
       </div>
@@ -261,6 +271,7 @@ type WithOptionsAnswerAreaProps = Readonly<{
     optionId: string,
     value: string
   ) => void;
+  enableAutoFocusOnAdd: boolean;
 }>;
 
 function WithOptionsAnswerArea({
@@ -268,6 +279,7 @@ function WithOptionsAnswerArea({
   addNewOption,
   deleteOption,
   updateOption,
+  enableAutoFocusOnAdd,
 }: WithOptionsAnswerAreaProps) {
   const lastIndex = question.options.length - 1;
 
@@ -290,6 +302,7 @@ function WithOptionsAnswerArea({
             </label>
             <input
               type="text"
+              autoFocus={enableAutoFocusOnAdd}
               id={option.id}
               name="option"
               defaultValue={option.value}
@@ -303,7 +316,9 @@ function WithOptionsAnswerArea({
               <button
                 type="button"
                 className="relative text-gray-400 hover:text-black"
-                onClick={() => addNewOption(question)}
+                onClick={() => {
+                  addNewOption(question);
+                }}
               >
                 <Plus />
                 <span className="sr-only">
