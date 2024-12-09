@@ -107,6 +107,26 @@ export function FormStateProvider(
     });
   }, [store]);
 
+  React.useEffect(() => {
+    const eventName = "beforeunload";
+    const handler = (e: BeforeUnloadEvent) => {
+      const { areChangesSaved } = store.getState();
+      if (areChangesSaved) {
+        return;
+      }
+      const closeTab = confirm(
+        "You have unsaved changes. Are you sure you want to leave?"
+      );
+      if (!closeTab) {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener(eventName, handler);
+    return () => {
+      window.removeEventListener(eventName, handler);
+    };
+  }, [store]);
+
   return (
     <FormBuilderStateContext.Provider value={store}>
       {props.children}
