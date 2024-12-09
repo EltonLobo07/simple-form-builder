@@ -2,19 +2,10 @@
 
 import { classJoin } from "@/utils/tailwind";
 import { NewTab } from "../icons";
-import { useFormState } from "./form-state";
-import { isFormBuilderStateValid } from "./helpers";
+import { useIsFormStateValid } from "./useIsFormStateValid";
 
 export function PreviewLink() {
-  const heading = useFormState((state) => state.heading);
-  const questions = useFormState((state) => state.questions);
-  const areChangesSaved = useFormState((state) => state.areChangesSaved);
-
-  const isValid = isFormBuilderStateValid({
-    heading,
-    questions,
-    areChangesSaved,
-  });
+  const isValid = useIsFormStateValid();
 
   /*
     `Link` from NextJS is purposely not used here as
