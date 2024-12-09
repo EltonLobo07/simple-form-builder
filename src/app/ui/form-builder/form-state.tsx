@@ -97,7 +97,7 @@ export function FormStateProvider(
 
   React.useEffect(() => {
     const { questions, heading } = fromLocalStorage({
-      defaultValue: { questions: [], heading: "Initial value" },
+      defaultValue: { questions: [], heading: "" },
       isValue: (possibleValue) =>
         v.is(
           v.object({
