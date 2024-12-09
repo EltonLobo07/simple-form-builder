@@ -70,9 +70,18 @@ export function FormStateProvider(
             areChangesSaved: false,
           }));
         },
-        setNotification: (notification: Notification) => {
+        setNotification: (
+          notification:
+            | Notification
+            | null
+            | ((curNotification: Notification | null) => Notification | null)
+        ) => {
+          const curNotification = get().notification;
           set(() => ({
-            notification,
+            notification:
+              typeof notification === "function"
+                ? notification(curNotification)
+                : notification,
           }));
         },
         changesSaved: () => {

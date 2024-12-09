@@ -39,7 +39,12 @@ export type FormState = {
   addQuestion: (question: Question) => void;
   updateQuestion: (id: string, updated: Question) => void;
   deleteQuestion: (id: string) => void;
-  setNotification: (notification: Notification) => void;
+  setNotification: (
+    notification:
+      | Notification
+      | null
+      | ((curNotification: Notification | null) => Notification | null)
+  ) => void;
   changesSaved: () => void;
   setHeading: (heading: string) => void;
   setEnableAutoFocusOnAdd: (enableAutoFocusOnAdd: boolean) => void;
