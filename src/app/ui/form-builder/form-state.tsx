@@ -109,10 +109,14 @@ export function FormStateProvider(
       key: FORM_BUILDER_STATE_LS_KEY,
     });
     const curNotification = store.getState().notification;
-    store.setState({
-      questions,
-      heading,
-      notification: curNotification?.id === null ? null : curNotification,
+    // add an artificial delay to avoid skeleton ui flicker
+    // todo: find a better way (remove the artificial delay)
+    new Promise((resolve) => setTimeout(resolve, 300)).then(() => {
+      store.setState({
+        questions,
+        heading,
+        notification: curNotification?.id === null ? null : curNotification,
+      });
     });
   }, [store]);
 
