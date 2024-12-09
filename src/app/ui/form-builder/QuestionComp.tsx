@@ -22,6 +22,7 @@ import { Select } from "../components/Select";
 import { QUESTION_TYPES } from "./constants";
 import { exhaustiveCheck } from "@/utils/code-flow";
 import { newOption } from "./helpers";
+import { motion } from "motion/react";
 
 type Props = Readonly<{
   question: Question;
@@ -117,8 +118,11 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
   );
 
   return (
-    <div className="border border-gray-200 relative bg-white rounded-2xl p-4">
-      <div className="flex items-center gap-x-2 mb-2">
+    <div className="border border-gray-200 relative bg-white rounded-2xl px-[15px] py-[0.9375rem]">
+      <motion.div
+        layout={true}
+        className="flex items-center gap-2 mb-2 flex-wrap"
+      >
         <div className="grow flex flex-col gap-y-1">
           <label htmlFor={titleInputId} className="sr-only">
             title
@@ -130,7 +134,7 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
             defaultValue={question.title}
             onChange={(e) => onTextChange({ title: e.target.value })}
             placeholder="Write a question"
-            className="font-semibold text-sm placeholder:text-gray-400 text-black"
+            className="font-semibold text-sm placeholder:text-gray-400 text-black pl-[2px]"
           />
           <label htmlFor={helpTextInputId} className="sr-only">
             help text
@@ -142,10 +146,10 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
             defaultValue={question.helpText}
             onChange={(e) => onTextChange({ helpText: e.target.value })}
             placeholder="Write a help text or caption (leave empty if not needed)."
-            className="text-xs placholder:text-gray-400 text-black"
+            className="text-xs placholder:text-gray-400 text-black pl-[2px]"
           />
         </div>
-        <div className="flex items-center gap-x-8px">
+        <div className="ml-auto flex items-center gap-x-[4px]">
           <Select
             selected={question.type}
             onChange={onTypeChange}
@@ -162,13 +166,13 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
           <button
             type="button"
             onClick={() => onDelete(question.id)}
-            className="relative"
+            className="relative text-gray-400 hover:text-black"
           >
             <span className="sr-only">delete this question</span>
             <Delete />
           </button>
         </div>
-      </div>
+      </motion.div>
       <div className="relative flex">
         {question.type !== "single-select" ? (
           <WithoutOptionsAnswerArea question={question} />
@@ -272,9 +276,13 @@ function WithOptionsAnswerArea({
       <legend className="sr-only">options</legend>
       <ol className="flex flex-col gap-y-2">
         {question.options.map((option, index) => (
-          <li
+          <motion.li
+            layout={true}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
             key={option.id}
-            className="w-full relative flex items-center gap-x-8px"
+            className="w-full overflow-auto relative flex items-center gap-x-8px"
           >
             <Circle />
             <label htmlFor={option.id} className="sr-only">
@@ -289,12 +297,12 @@ function WithOptionsAnswerArea({
                 updateOption(question, option.id, e.target.value)
               }
               placeholder={`Option ${index + 1}`}
-              className="grow border border-gray-200 rounded-lg px-8px py-[0.3125rem]"
+              className="w-0 grow border border-gray-200 rounded-lg px-8px py-[0.3125rem]"
             />
             {lastIndex === index && (
               <button
                 type="button"
-                className="relative text-black"
+                className="relative text-gray-400 hover:text-black"
                 onClick={() => addNewOption(question)}
               >
                 <Plus />
@@ -306,14 +314,14 @@ function WithOptionsAnswerArea({
             {index > 1 && (
               <button
                 type="button"
-                className="relative text-black"
+                className="relative text-gray-400 hover:text-black"
                 onClick={() => deleteOption(question, option.id)}
               >
                 <Delete />
                 <span className="sr-only">delete this option</span>
               </button>
             )}
-          </li>
+          </motion.li>
         ))}
       </ol>
     </fieldset>

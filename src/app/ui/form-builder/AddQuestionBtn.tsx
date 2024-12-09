@@ -3,6 +3,7 @@
 import { getId } from "@/utils/random";
 import { Plus } from "../icons";
 import { useFormState } from "./form-state";
+import { motion } from "motion/react";
 
 export function AddQuestionBtn() {
   const addQuestion = useFormState((state) => state.addQuestion);
@@ -13,7 +14,8 @@ export function AddQuestionBtn() {
   }
 
   return (
-    <button
+    <motion.button
+      layout={true}
       type="button"
       onClick={() =>
         addQuestion({
@@ -28,6 +30,6 @@ export function AddQuestionBtn() {
     >
       <Plus />
       <span>Add question</span>
-    </button>
+    </motion.button>
   );
 }
