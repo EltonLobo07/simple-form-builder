@@ -21,7 +21,7 @@ type Props = Readonly<
 export function BtnWithIcon(props: Props) {
   const disabled = (props.pending || props.ariaDisabled) ?? false;
   const iconJSX = props.pending ? (
-    <Loader className="animate-spin" />
+    <Loader className="motion-safe:animate-spin" />
   ) : (
     props.icon
   );
