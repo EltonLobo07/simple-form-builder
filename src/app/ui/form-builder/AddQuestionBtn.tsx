@@ -30,10 +30,10 @@ export function AddQuestionBtn() {
           options: null,
         });
       }}
-      className="mx-auto border border-gray-200 bg-white rounded-xl py-[5px] pl-[13px] pr-[15px] text-sm font-semibold text-black flex items-center gap-x-1"
+      className="mx-auto border border-gray-200 bg-white hover:bg-gray-50 rounded-xl py-[5px] pl-[13px] pr-[15px] text-sm font-semibold text-black flex items-center gap-x-1"
     >
       <Plus />
-      <span>Add question</span>
+      <span>Add Question</span>
     </motion.button>
   );
 }

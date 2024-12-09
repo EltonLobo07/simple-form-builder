@@ -1,5 +1,5 @@
 import { getId } from "@/utils/random";
-import { FormState } from "./types";
+import { FormState, QuestionType, QuestionWithoutOptions } from "./types";
 
 export function newOption() {
   return {
@@ -31,4 +31,20 @@ export function isFormBuilderStateValid({
     }
   }
   return true;
+}
+
+export function getTitlePlaceholder(questionType: QuestionType) {
+  if (questionType === "url") {
+    return "Link to your best work";
+  }
+  return "Write a question";
+}
+
+export function getAnswerPlaceholder(
+  questionType: QuestionWithoutOptions["type"]
+) {
+  if (questionType === "url") {
+    return "Placeholder";
+  }
+  return "";
 }

@@ -30,7 +30,7 @@ export function FormBuilder(props: Props) {
     >
       <FormStateProvider>
         <div className="sticky top-0 z-10 bg-white">
-          <header className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 py-3 pl-[20px] pr-24px">
+          <header className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 py-3 pl-[4px] tabAndUp:pl-[20px] pr-8px tabAndUp:pr-24px">
             <Heading id={formHeadingId} className="grow">
               <HeadingInput />
             </Heading>
@@ -47,9 +47,10 @@ export function FormBuilder(props: Props) {
             <AddQuestionBtn />
           </LayoutGroup>
         </div>
-        <div className="sticky bottom-0 bg-[#F6F8FA] px-24px py-4 border-t border-gray-200 flex justify-between gap-x-2">
+        <div className="sticky bottom-0 bg-[#F6F8FA] px-8px tabAndUp:px-24px py-4 border-t border-gray-200 flex flex-wrap justify-between gap-2">
           <SaveAsDraftBtn />
           <BtnWithIcon
+            ariaDisabled={true}
             icon={<Tick />}
             theme="green"
             pending={false}

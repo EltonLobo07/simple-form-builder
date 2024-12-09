@@ -40,10 +40,16 @@ export function BtnWithIcon(props: Props) {
       aria-disabled={disabled}
       className={classJoin(
         "pl-[13px] pr-[15px] relative rounded-xl py-[0.3125rem] text-sm font-semibold flex items-center gap-x-1 border",
-        disabled && "opacity-50",
         props.theme === "green"
-          ? "border-green-400 hover:border-green-500 bg-green-400 hover:bg-green-500 text-white"
-          : "text-black border-gray-200 bg-white"
+          ? classJoin(
+              "border text-white",
+              disabled
+                ? "opacity-50 bg-green-400 border-green-400"
+                : "bg-green-500 hover:bg-green-600 border-green-500"
+            )
+          : disabled
+          ? "text-gray-400 bg-white"
+          : "text-black bg-white hover:bg-gray-50 border-gray-200"
       )}
       onClick={onClick}
     >

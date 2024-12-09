@@ -21,7 +21,11 @@ import {
 import { Select } from "../components/Select";
 import { QUESTION_TYPES } from "./constants";
 import { exhaustiveCheck } from "@/utils/code-flow";
-import { newOption } from "./helpers";
+import {
+  getAnswerPlaceholder,
+  getTitlePlaceholder,
+  newOption,
+} from "./helpers";
 import { motion } from "motion/react";
 import { useFormState } from "./form-state";
 
@@ -126,7 +130,7 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
   );
 
   return (
-    <div className="border border-gray-200 relative bg-white rounded-2xl px-[15px] py-[0.9375rem]">
+    <div className="border border-gray-200 relative bg-white hover:bg-gray-50 rounded-2xl px-[15px] py-[0.9375rem]">
       <motion.div
         layout={true}
         className="flex items-center gap-2 mb-2 flex-wrap"
@@ -142,8 +146,8 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
             name="title"
             defaultValue={question.title}
             onChange={(e) => onTextChange({ title: e.target.value })}
-            placeholder="Write a question"
-            className="font-semibold text-sm placeholder:text-gray-400 text-black pl-[2px]"
+            placeholder={getTitlePlaceholder(question.type)}
+            className="font-semibold bg-transparent text-sm placeholder:text-gray-400 text-black pl-[2px]"
           />
           <label htmlFor={helpTextInputId} className="sr-only">
             help text
@@ -155,7 +159,7 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
             defaultValue={question.helpText}
             onChange={(e) => onTextChange({ helpText: e.target.value })}
             placeholder="Write a help text or caption (leave empty if not needed)."
-            className="text-xs placholder:text-gray-400 text-black pl-[2px]"
+            className="text-xs bg-transparent placholder:text-gray-400 text-black pl-[2px]"
           />
         </div>
         <div className="ml-auto flex items-center gap-x-[4px]">
@@ -208,6 +212,7 @@ function WithoutOptionsAnswerArea({ question }: WithoutOptionsAnswerAreaProps) {
 
   const { type } = question;
   let inputPreviewJSX: React.ReactNode = null;
+  // The repetition here is fine. It unlocks the ability to customize each type of input if needed
   switch (type) {
     case "short-answer":
       inputPreviewJSX = (
@@ -215,7 +220,8 @@ function WithoutOptionsAnswerArea({ question }: WithoutOptionsAnswerAreaProps) {
           id={id}
           readOnly={true}
           type="text"
-          className="border border-gray-200 rounded-lg bg-gray-100 grow"
+          placeholder={getAnswerPlaceholder("short-answer")}
+          className="border border-gray-200 rounded-lg bg-gray-100 grow px-[7px] py-[0.3125rem] text-sm"
         />
       );
       break;
@@ -224,7 +230,8 @@ function WithoutOptionsAnswerArea({ question }: WithoutOptionsAnswerAreaProps) {
         <textarea
           id={id}
           readOnly={true}
-          className="border border-gray-200 rounded-lg bg-gray-100 grow min-h-[80px]"
+          placeholder={getAnswerPlaceholder("long-answer")}
+          className="border border-gray-200 rounded-lg bg-gray-100 grow min-h-[80px] resize-none px-[7px] py-[0.3125rem] text-sm"
         ></textarea>
       );
       break;
@@ -234,7 +241,8 @@ function WithoutOptionsAnswerArea({ question }: WithoutOptionsAnswerAreaProps) {
           id={id}
           readOnly={true}
           type="number"
-          className="border border-gray-200 rounded-lg bg-gray-100 grow"
+          placeholder={getAnswerPlaceholder("number")}
+          className="border border-gray-200 rounded-lg bg-gray-100 grow px-[7px] py-[0.3125rem] text-sm"
         />
       );
       break;
@@ -244,7 +252,8 @@ function WithoutOptionsAnswerArea({ question }: WithoutOptionsAnswerAreaProps) {
           id={id}
           readOnly={true}
           type="url"
-          className="border border-gray-200 rounded-lg bg-gray-100 grow"
+          placeholder={getAnswerPlaceholder("url")}
+          className="border border-gray-200 rounded-lg bg-gray-100 grow px-[7px] py-[0.3125rem] text-sm"
         />
       );
       break;
@@ -290,13 +299,15 @@ function WithOptionsAnswerArea({
         {question.options.map((option, index) => (
           <motion.li
             layout={true}
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
+            exit={{ opacity: 0, scale: 0.95 }}
             key={option.id}
             className="w-full overflow-auto relative flex items-center gap-x-8px"
           >
-            <Circle />
+            <span className="text-gray-500 inline-block">
+              <Circle />
+            </span>
             <label htmlFor={option.id} className="sr-only">
               option number {index + 1}
             </label>
@@ -310,7 +321,7 @@ function WithOptionsAnswerArea({
                 updateOption(question, option.id, e.target.value)
               }
               placeholder={`Option ${index + 1}`}
-              className="w-0 grow border border-gray-200 rounded-lg px-8px py-[0.3125rem]"
+              className="w-0 bg-transparent grow border border-gray-200 rounded-lg px-[7px] py-[0.3125rem] text-sm"
             />
             {lastIndex === index && (
               <button

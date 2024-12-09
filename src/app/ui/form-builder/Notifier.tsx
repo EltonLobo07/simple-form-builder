@@ -22,7 +22,7 @@ export function Notifier() {
       aria-live="polite"
       aria-atomic={true}
       className={classJoin(
-        "relative min-h-6 text-xs font-medium flex items-center gap-x-1 px-24px",
+        "relative min-h-6 text-xs font-medium flex items-center gap-x-1 px-8px tabAndUp:px-24px",
         notification?.type === "critical" ? "text-red-500" : "text-yellow-500"
       )}
     >

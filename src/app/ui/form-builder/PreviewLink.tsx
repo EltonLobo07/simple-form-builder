@@ -32,7 +32,7 @@ export function PreviewLink() {
       }}
       className={classJoin(
         "border border-gray-200 flex items-center gap-x-1 rounded-xl py-[0.3125rem] pl-[15px] pr-[13px] text-sm font-semibold",
-        isValid ? "text-black hover:bg-gray-100" : "text-gray-400"
+        isValid ? "text-black hover:bg-gray-50" : "text-gray-400"
       )}
     >
       <span>Preview</span>
