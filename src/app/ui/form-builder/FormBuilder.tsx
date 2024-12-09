@@ -41,7 +41,7 @@ export function FormBuilder(props: Props) {
           </header>
           <Notifier />
         </div>
-        <div className="grow">
+        <div className="grow pb-8px">
           <LayoutGroup>
             <Questions />
             <AddQuestionBtn />
