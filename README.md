@@ -47,3 +47,12 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Publishing a form
 
   This feature is very similar to the `Preview form` feature. The only difference is the source of the form builder's state. Since the form has to be publicly accessible (any user should be able to fill out the form), I would have to store the details in a global database. I would have created an API that would turn a valid form builder's state into a unique string. The unique string will be the dynamic segment of the public URL (Example: `<APP_LINK>/published/[UNIQUE_STRING]`).
+
+## How do the implemented features work?
+
+- The preview link is enabled only if the form builder's title is filled and has at least one question with all of the fields filled (each question's title and option name if it is a single-select question).
+- There is a dot next to the preview button that will be yellow if there are changes that are not saved. Once the changes are saved using the `Save as Draft` button, the dot will be green.
+- The `Save as Draft` button is disabled when there is nothing to save.
+- The browser will ask for your confirmation if you try to refresh or close the tab while there are some changes that are not saved.
+- The `Publish form` button is enabled using the same conditions used to enable the `Preview` link.
+- Trying to publish a form or reorder a question using the reorder handle will trigger a notification with a message since these features are not supported in the application.
