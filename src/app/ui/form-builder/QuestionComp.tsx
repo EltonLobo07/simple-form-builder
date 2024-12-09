@@ -28,6 +28,7 @@ import {
 } from "./helpers";
 import { motion } from "motion/react";
 import { useFormState } from "./form-state";
+import { getId } from "@/utils/random";
 
 type Props = Readonly<{
   question: Question;
@@ -171,11 +172,7 @@ export function QuestionComp({ question, onChange, onDelete }: Props) {
             srOnlyLabel="question type"
             groupLabel="INPUT TYPES"
           />
-          {/*todo: use this button for the 'drag and drop' feature*/}
-          <button type="button" className="relative">
-            <span className="sr-only">reorder question</span>
-            <Handle />
-          </button>
+          <ReorderHandle />
           <button
             type="button"
             onClick={() => onDelete(question.id)}
@@ -351,5 +348,37 @@ function WithOptionsAnswerArea({
         ))}
       </ol>
     </fieldset>
+  );
+}
+
+function ReorderHandle() {
+  const setNotification = useFormState((state) => state.setNotification);
+
+  const onClick = () => {
+    const id = getId();
+    setNotification({
+      type: "info",
+      message: "reordering absent 😞 (check github)",
+      srOnly: false,
+      id,
+    });
+    setTimeout(() => {
+      setNotification((curNotification) =>
+        curNotification?.id === id ? null : curNotification
+      );
+    }, 3000);
+  };
+
+  return (
+    <button
+      type="button"
+      draggable={true}
+      onDragStart={onClick}
+      className="relative"
+      onClick={onClick}
+    >
+      <span className="sr-only">reorder question</span>
+      <Handle />
+    </button>
   );
 }
